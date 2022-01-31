@@ -77,13 +77,13 @@ class Main extends React.Component {
                             </Dropdown.Item>
                         </DropdownButton>
                         <FormControl
-                          placeholder="Recipient's username"
+                          placeholder={this.state.apiMode != "videobackup-submit" ? "video_id" : "url"}
                           aria-label="Recipient's username"
                           aria-describedby="basic-addon2"
                           value={this.state.inputValue}
                           onChange={this.handleInputChange}
                         />
-                        <Button id="button-addon2"
+                        <Button
                             onClick={this.handleAPIRequest}
                         >
                           リクエスト
