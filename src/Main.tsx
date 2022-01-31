@@ -66,6 +66,7 @@ class Main extends React.Component {
 
     componentDidMount(){
         this.getVideoList("complete", 50)
+        this.getVideoList("init", 50)
     }
 
     render() {
@@ -115,7 +116,7 @@ class Main extends React.Component {
                                 <Button variant="light" color='info' onClick={()=> this.getVideoList("complete", this.state.completeVideos.length+50)}>more</Button>
                             }
                         </Tab>
-                        <Tab eventKey="init" title="progress">
+                        <Tab eventKey="init" title={"progress" + (this.state.initVideos.length == 0 ? "" : "(" + this.state.initVideos.length + ")") }>
                             <ListGroup>
                                 { this.state.initVideos.map((value) => 
                                     <ListGroup.Item action className='m-1'>
