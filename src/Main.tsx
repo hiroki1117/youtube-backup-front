@@ -3,6 +3,9 @@ import axios from 'axios';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import Button from '@mui/material/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroupItem from 'react-bootstrap/ListGroupItem';
+import { Container } from 'react-bootstrap';
 
 const youtubebackupApiServer = process.env.REACT_APP_API_URL
 
@@ -58,20 +61,24 @@ class Main extends React.Component {
         
         return (
             <div>
-                <div>
-                    <input type="text" value={this.state.searchValue} onChange={this.handleChange} /><input type="submit" value="検索" onClick={this.handleSubmit}/>
-                </div>
-                <ul>
-                    { this.state.videos.map((value) => 
-                        <li>
-                            <div>
-                                {value["backupdate"]} : 
-                                <span onClick={()=> window.open(value["video_url"])}><YouTubeIcon /></span> <span onClick={()=> {this.presignedS3(value["video_id"]).then(x => window.open(x.data.presigned_s3url, '_blank'))}}><CloudDownloadIcon /></span> {value["title"]}
-                            </div>
-                        </li>    
-                    )}
-                </ul>
-                <Button variant="outlined" onClick={()=> this.getVideoList("complete", this.state.videos.length+50)}>more</Button>
+                <Container>
+                    <div>
+                        <input type="text" value={this.state.searchValue} onChange={this.handleChange} /><input type="submit" value="検索" onClick={this.handleSubmit}/>
+                    </div>
+                    <ListGroup>
+                        { this.state.videos.map((value) => 
+                            <ListGroup.Item action className='m-1'>
+                                <div>
+                                    {value["backupdate"]} : 
+                                    <span onClick={()=> window.open(value["video_url"])}><YouTubeIcon /></span>
+                                    <span onClick={()=> {this.presignedS3(value["video_id"]).then(x => window.open(x.data.presigned_s3url, '_blank'))}}><CloudDownloadIcon /></span>
+                                    <div>{value["title"]}</div>
+                                </div>
+                            </ListGroup.Item>    
+                        )}
+                    </ ListGroup>
+                    <Button variant="outlined" color='info' onClick={()=> this.getVideoList("complete", this.state.videos.length+50)}>more</Button>
+                    </Container>
             </div>
         )
     }
