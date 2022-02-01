@@ -3,6 +3,7 @@ import axios from 'axios';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Container, InputGroup, FormControl, ListGroup, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
+import PlatformIcon from './PlatformIcon';
 
 const youtubebackupApiServer = process.env.REACT_APP_API_URL
 
@@ -120,7 +121,7 @@ class Main extends React.Component {
                                     <ListGroup.Item action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}><YouTubeIcon /></span>
+                                            <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
                                             <span onClick={()=> {this.presignedS3(value["video_id"]).then(x => window.open(x.data.presigned_s3url, '_blank'))}}><CloudDownloadIcon /></span>
                                             <div>{value["title"]}</div>
                                         </div>
@@ -137,7 +138,7 @@ class Main extends React.Component {
                                     <ListGroup.Item action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}><YouTubeIcon /></span>
+                                            <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
                                             <div>{value["title"]}</div>
                                         </div>
                                     </ListGroup.Item>    
