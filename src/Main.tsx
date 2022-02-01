@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { Container, InputGroup, FormControl, ListGroup, Button, DropdownButton, Dropdown, Tab, Tabs} from 'react-bootstrap';
+import { Container, InputGroup, FormControl, ListGroup, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
 
 const youtubebackupApiServer = process.env.REACT_APP_API_URL
 
@@ -13,7 +13,9 @@ class Main extends React.Component {
         searchValue: "",
         apiMode: "video-info",
         apiModeText: "検索",
-        inputValue: ""
+        inputValue: "",
+        showAlert: false,
+        apiResultJson: {}
     }
 
     getVideoList = async (uploadStatus: String, fetchNum: Number) => {
@@ -53,8 +55,9 @@ class Main extends React.Component {
         const res = await axios.get(youtubebackupApiServer + "/" + path ,{
             params: params
         }).then(result => {
-            console.log(result.data)
-            alert(JSON.stringify(result.data))
+            this.setState({showAlert: true})
+            this.setState({apiResultJson: result.data})
+            // alert(JSON.stringify(result.data))
         })
     }
 
@@ -98,6 +101,18 @@ class Main extends React.Component {
                           リクエスト
                         </Button>
                     </InputGroup>
+                    <Alert show={this.state.showAlert} variant="success">
+                        <Alert.Heading>リクエスト結果</Alert.Heading>
+                            <p>
+                                {JSON.stringify(this.state.apiResultJson, null, 4)}
+                            </p>
+                            <hr />
+                            <div className="d-flex justify-content-end">
+                              <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
+                                close
+                              </Button>
+                            </div>
+                    </Alert>
                     <Tabs defaultActiveKey="complete" onSelect={this.handleSelect}>
                         <Tab eventKey="complete" title="complete">
                             <ListGroup>
