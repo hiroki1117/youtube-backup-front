@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Container, InputGroup, FormControl, ListGroup, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
 import PlatformIcon from './PlatformIcon';
@@ -27,9 +26,9 @@ class Main extends React.Component {
                 fetch_num: fetchNum
             }
         })
-        if (uploadStatus=="complete") {
+        if (uploadStatus === "complete") {
             this.setState({completeVideos: res.data})
-        } else if(uploadStatus=="init") {
+        } else if(uploadStatus === "init") {
             this.setState({initVideos: res.data})
         }
     }
@@ -51,9 +50,9 @@ class Main extends React.Component {
     handleAPIRequest = async (event: any) => {
         const path = this.state.apiMode
 
-        const params = path != "videobackup-submit" ? {video_id: this.state.inputValue} : {url: this.state.inputValue}
+        const params = path !== "videobackup-submit" ? {video_id: this.state.inputValue} : {url: this.state.inputValue}
 
-        const res = await axios.get(youtubebackupApiServer + "/" + path ,{
+        await axios.get(youtubebackupApiServer + "/" + path ,{
             params: params
         }).then(result => {
             this.setState({showAlert: true})
@@ -63,7 +62,7 @@ class Main extends React.Component {
     }
 
     handleSelect = (key: any) => {
-        if (key == "init") {
+        if (key === "init") {
             this.getVideoList("init", 100)
         }
     }
@@ -92,7 +91,7 @@ class Main extends React.Component {
                             </Dropdown.Item>
                         </DropdownButton>
                         <FormControl
-                          placeholder={this.state.apiMode != "videobackup-submit" ? "video_id" : "url"}
+                          placeholder={this.state.apiMode !== "videobackup-submit" ? "video_id" : "url"}
                           aria-label="Recipient's username"
                           aria-describedby="basic-addon2"
                           value={this.state.inputValue}
@@ -118,7 +117,7 @@ class Main extends React.Component {
                         <Tab eventKey="complete" title="complete">
                             <ListGroup>
                                 { this.state.completeVideos.map((value) => 
-                                    <ListGroup.Item action className='m-1'>
+                                    <ListGroup.Item key={value["video_id"]} action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
                                             <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
@@ -132,10 +131,10 @@ class Main extends React.Component {
                                 <Button variant="light" color='info' onClick={()=> this.getVideoList("complete", this.state.completeVideos.length+50)}>more</Button>
                             }
                         </Tab>
-                        <Tab eventKey="init" title={"progress" + (this.state.initVideos.length == 0 ? "" : "(" + this.state.initVideos.length + ")") }>
+                        <Tab eventKey="init" title={"progress" + (this.state.initVideos.length === 0 ? "" : "(" + this.state.initVideos.length + ")") }>
                             <ListGroup>
                                 { this.state.initVideos.map((value) => 
-                                    <ListGroup.Item action className='m-1'>
+                                    <ListGroup.Item key={value["video_id"]} action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
                                             <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
