@@ -120,7 +120,7 @@ class Main extends React.Component {
                                     <ListGroup.Item key={value["video_id"]} action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
+                                            <span onClick={()=> window.open(value["video_url"])}><PlatformIcon platform={value["platform"]} /></span>
                                             <span onClick={()=> {this.presignedS3(value["video_id"]).then(x => window.open(x.data.presigned_s3url, '_blank'))}}><CloudDownloadIcon /></span>
                                             <div>{value["title"]}</div>
                                         </div>
@@ -137,7 +137,7 @@ class Main extends React.Component {
                                     <ListGroup.Item key={value["video_id"]} action className='m-1'>
                                         <div>
                                             {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}>{PlatformIcon(value["platform"])}</span>
+                                            <span onClick={()=> window.open(value["video_url"])}><PlatformIcon platform={value["platform"]} /></span>
                                             <div>{value["title"]}</div>
                                         </div>
                                     </ListGroup.Item>    
