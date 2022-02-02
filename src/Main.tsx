@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { Container, InputGroup, FormControl, ListGroup, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
-import PlatformIcon from './PlatformIcon';
+import { Container, InputGroup, FormControl, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
+import VideoList from './VideoList';
 
 const youtubebackupApiServer = process.env.REACT_APP_API_URL
 
@@ -67,6 +66,15 @@ class Main extends React.Component {
         }
     }
 
+    handleIconClick = (url: string) => {
+        window.open(url)
+    }
+
+    handleDownloadClick = (video_id: string) => {
+        this.presignedS3(video_id)
+            .then(x => window.open(x.data.presigned_s3url, '_blank'))
+    }
+
     componentDidMount(){
         this.getVideoList("complete", 50)
         this.getVideoList("init", 50)
@@ -115,34 +123,21 @@ class Main extends React.Component {
                     </Alert>
                     <Tabs defaultActiveKey="complete" onSelect={this.handleSelect}>
                         <Tab eventKey="complete" title="complete">
-                            <ListGroup>
-                                { this.state.completeVideos.map((value) => 
-                                    <ListGroup.Item key={value["video_id"]} action className='m-1'>
-                                        <div>
-                                            {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}><PlatformIcon platform={value["platform"]} /></span>
-                                            <span onClick={()=> {this.presignedS3(value["video_id"]).then(x => window.open(x.data.presigned_s3url, '_blank'))}}><CloudDownloadIcon /></span>
-                                            <div>{value["title"]}</div>
-                                        </div>
-                                    </ListGroup.Item>    
-                                )}
-                            </ ListGroup>
+                            <VideoList
+                                videos={this.state.completeVideos}
+                                handleIconClick={this.handleIconClick}
+                                handleDownloadClick={this.handleDownloadClick}
+                                />
                             {this.state.completeVideos.length > 0 &&
                                 <Button variant="light" color='info' onClick={()=> this.getVideoList("complete", this.state.completeVideos.length+50)}>more</Button>
                             }
                         </Tab>
                         <Tab eventKey="init" title={"progress" + (this.state.initVideos.length === 0 ? "" : "(" + this.state.initVideos.length + ")") }>
-                            <ListGroup>
-                                { this.state.initVideos.map((value) => 
-                                    <ListGroup.Item key={value["video_id"]} action className='m-1'>
-                                        <div>
-                                            {value["backupdate"]} : 
-                                            <span onClick={()=> window.open(value["video_url"])}><PlatformIcon platform={value["platform"]} /></span>
-                                            <div>{value["title"]}</div>
-                                        </div>
-                                    </ListGroup.Item>    
-                                )}
-                            </ ListGroup>
+                            <VideoList
+                                videos={this.state.initVideos}
+                                handleIconClick={this.handleIconClick}
+                                handleDownloadClick={this.handleDownloadClick}
+                                />
                         </Tab>
                     </Tabs>
                 </Container>
