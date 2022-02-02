@@ -17,7 +17,9 @@ const VideoListGroup: React.FC<Props> = (props) => {
             <div>
                 {video["backupdate"]} :
                 <span onClick={() => {props.handleIconClick(video["video_url"])}}><PlatformIcon platform={video["platform"]} /></span>
+                {video["upload_status"] === "complete" &&
                 <span onClick={() => props.handleDownloadClick(video["video_id"])}><CloudDownloadIcon /></span>
+                }
                 <div>{video["title"]}</div>
             </div>
         </ ListGroup.Item>
