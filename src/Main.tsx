@@ -14,7 +14,7 @@ class Main extends React.Component {
         apiModeText: "検索",
         inputValue: "",
         showAlert: false,
-        apiResultJson: {}
+        apiResultJson: {result: null, video_data: {video_id: "", video_url: ""}}
     }
 
     getVideoList = async (uploadStatus: String, fetchNum: Number) => {
@@ -56,7 +56,6 @@ class Main extends React.Component {
         }).then(result => {
             this.setState({showAlert: true})
             this.setState({apiResultJson: result.data})
-            // alert(JSON.stringify(result.data))
         })
     }
 
@@ -116,9 +115,23 @@ class Main extends React.Component {
                             </p>
                             <hr />
                             <div className="d-flex justify-content-end">
-                              <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
-                                close
-                              </Button>
+                                {(this.state.apiMode==="video-info") && (this.state.apiResultJson["result"]==="succ") &&
+                                    <>
+                                    <Button className="ml-4 mr-4" variant="outline-success"
+                                        onClick={() => window.open(this.state.apiResultJson["video_data"]["video_url"])}
+                                        >
+                                        GoPage
+                                    </Button>
+                                    <Button className="ml-4 mr-4" variant="outline-success"
+                                        onClick={() => this.handleDownloadClick(this.state.apiResultJson["video_data"]["video_id"])}
+                                        >
+                                        Download
+                                    </Button>
+                                    </>
+                                }
+                                <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
+                                    close
+                                </Button>
                             </div>
                     </Alert>
                     <Tabs defaultActiveKey="complete" onSelect={this.handleSelect}>
