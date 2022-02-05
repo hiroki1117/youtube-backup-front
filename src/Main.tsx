@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Container, InputGroup, FormControl, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
 import VideoList from './VideoList';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 
 const youtubebackupApiServer = process.env.REACT_APP_API_URL
 
@@ -83,7 +85,8 @@ class Main extends React.Component {
         console.log(this.state.completeVideos)
         
         return (
-            <div>
+            <Authenticator variation="modal">
+            {({ signOut, user }) => (
                 <Container>
                     <InputGroup className="mb-2 mt-3">
                         <DropdownButton variant="outline-secondary" title={this.state.apiModeText}>
@@ -153,8 +156,14 @@ class Main extends React.Component {
                                 />
                         </Tab>
                     </Tabs>
+                    {this.state.completeVideos.length > 0 &&
+                    <div className="d-flex justify-content-end">
+                        <Button onClick={signOut} color='secondary'>Sign out</Button>
+                    </div>
+                    }
                 </Container>
-            </div>
+            )}
+            </Authenticator>
         )
     }
 }

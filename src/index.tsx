@@ -4,6 +4,19 @@ import './index.css';
 import Main from './Main';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Amplify } from 'aws-amplify';
+
+const awsRegion = process.env.REACT_APP_AWS_REGION
+const awsUserPoolId = process.env.REACT_APP_AWS_USER_POOL_ID
+const awsUserPoolWebClientId = process.env.REACT_APP_AWS_USER_POOL_WEB_CLIENT_ID
+
+Amplify.configure({
+  Auth: {
+      region: awsRegion,
+      userPoolId: awsUserPoolId,
+      userPoolWebClientId: awsUserPoolWebClientId
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>
