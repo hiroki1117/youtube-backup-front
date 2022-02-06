@@ -16,6 +16,7 @@ class Main extends React.Component {
         apiModeText: "検索",
         inputValue: "",
         showAlert: false,
+        tabKey: "complete",
         apiResultJson: {result: null, video_data: {video_id: "", video_url: ""}}
     }
 
@@ -65,6 +66,7 @@ class Main extends React.Component {
         if (key === "init") {
             this.getVideoList("init", 100)
         }
+        this.setState({tabKey: key})
     }
 
     handleIconClick = (url: string) => {
@@ -82,8 +84,6 @@ class Main extends React.Component {
     }
 
     render() {
-        console.log(this.state.completeVideos)
-        
         return (
             <Authenticator variation="modal">
             {({ signOut, user }) => (
@@ -137,7 +137,7 @@ class Main extends React.Component {
                                 </Button>
                             </div>
                     </Alert>
-                    <Tabs defaultActiveKey="complete" onSelect={this.handleSelect}>
+                    <Tabs activeKey={this.state.tabKey} onSelect={this.handleSelect}>
                         <Tab eventKey="complete" title="complete">
                             <VideoList
                                 videos={this.state.completeVideos}
