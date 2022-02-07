@@ -5,6 +5,7 @@ import Main from './Main';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Amplify } from 'aws-amplify';
+import { BrowserRouter } from "react-router-dom";
 
 const awsRegion = process.env.REACT_APP_AWS_REGION
 const awsUserPoolId = process.env.REACT_APP_AWS_USER_POOL_ID
@@ -20,7 +21,9 @@ Amplify.configure({
 
 ReactDOM.render(
   <React.StrictMode>
-    <Main />
+    <BrowserRouter>
+      <Main />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
