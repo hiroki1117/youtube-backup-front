@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Link} from "react-router-dom";
 import { Container, InputGroup, FormControl, Button, DropdownButton, Dropdown, Tab, Tabs, Alert} from 'react-bootstrap';
 import VideoList from './VideoList';
 
@@ -121,11 +122,11 @@ class VideoListPage extends React.Component {
                                         >
                                         GoPage
                                     </Button>
-                                    <Button className="ml-4 mr-4" variant="outline-success"
-                                        onClick={() => this.handleDownloadClick(this.state.apiResultJson["video_data"]["video_id"])}
-                                        >
-                                        Download
-                                    </Button>
+                                    <Link to={"/" + this.state.apiResultJson["video_data"]["video_id"]}>
+                                        <Button className="ml-4 mr-4" variant="outline-success">
+                                            Edit
+                                        </Button>
+                                    </Link>
                                     </>
                                 }
                                 <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
