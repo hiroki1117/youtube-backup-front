@@ -21,7 +21,7 @@ class Main extends React.Component {
     }
 
     getVideoList = async (uploadStatus: String, fetchNum: Number) => {
-        const path = "video-list"
+        const path = "video"
         const res = await axios.get(youtubebackupApiServer + "/" + path ,{
             params: {
                 upload_status: uploadStatus,
@@ -50,16 +50,30 @@ class Main extends React.Component {
     }
 
     handleAPIRequest = async (event: any) => {
-        const path = this.state.apiMode
+        const apitype = this.state.apiModeText
 
-        const params = path !== "videobackup-submit" ? {video_id: this.state.inputValue} : {url: this.state.inputValue}
-
-        await axios.get(youtubebackupApiServer + "/" + path ,{
-            params: params
-        }).then(result => {
-            this.setState({showAlert: true})
-            this.setState({apiResultJson: result.data})
-        })
+        if (apitype == "検索") {
+            // YoutubeのURLのみ対応
+            const video_id = this.state.inputValue.startsWith("http") ? (new URL(this.state.inputValue)).searchParams.get("v") : this.state.inputValue
+            await axios.get(youtubebackupApiServer + "/video/" + video_id)
+                .then(result => {
+                    this.setState({showAlert: true})
+                    this.setState({apiResultJson: result.data})
+                })
+        } else if (apitype == "保存") {
+            await axios.post(youtubebackupApiServer + "/video", {
+                url: this.state.inputValue})
+                .then(result => {
+                    this.setState({showAlert: true})
+                    this.setState({apiResultJson: result.data})
+                })
+        } else if (apitype == "削除") {
+            await axios.delete(youtubebackupApiServer + "/video/" + this.state.inputValue)
+                .then(result => {
+                    this.setState({showAlert: true})
+                    this.setState({apiResultJson: result.data})
+                })
+        }
     }
 
     handleSelect = (key: any) => {
